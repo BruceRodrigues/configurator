@@ -1,6 +1,5 @@
 package br.ufsc.configurator.api.field;
 
-import br.ufsc.configurator.api.FormFieldConstant;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,17 +7,17 @@ import lombok.Setter;
 @Setter
 public class ConfigColumn extends ConfigField {
 
-	private FormFieldConstant<?> tableConstant;
+	private Object tableConstant;
 
 	private CustomColumnGenerator customColumnGenerator;
 
-	public ConfigColumn(Integer position, FormFieldConstant<?> fieldConstant, FormFieldConstant<?> tableConstant,
+	public ConfigColumn(Integer position, Object fieldConstant, Object tableConstant,
 			String caption, String width) {
 		super(0, position, fieldConstant, caption, width, true, ConfigFieldType.COLUMN);
 		this.tableConstant = tableConstant;
 	}
 
-	public ConfigColumn(Integer position, FormFieldConstant<?> fieldConstant, FormFieldConstant<?> tableConstant,
+	public ConfigColumn(Integer position, Object fieldConstant, Object tableConstant,
 			String caption, String width, CustomColumnGenerator customColumnGenerator) {
 		super(0, position, fieldConstant, caption, width, true, ConfigFieldType.COLUMN);
 		this.tableConstant = tableConstant;
@@ -29,11 +28,11 @@ public class ConfigColumn extends ConfigField {
 		return this.customColumnGenerator != null;
 	}
 
-	public FormFieldConstant<?> getTableConstant() {
+	public Object getTableConstant() {
 		return tableConstant;
 	}
 
-	public void setTableConstant(FormFieldConstant<?> tableConstant) {
+	public void setTableConstant(Object tableConstant) {
 		this.tableConstant = tableConstant;
 	}
 

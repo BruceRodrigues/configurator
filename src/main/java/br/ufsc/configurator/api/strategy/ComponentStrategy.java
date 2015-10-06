@@ -6,6 +6,8 @@ public interface ComponentStrategy<COMPONENT_TYPE> {
 
 	void setEnabled(boolean value);
 
+	void setVisible(boolean value);
+
 	COMPONENT_TYPE getComponent();
 
 	String getCaption();

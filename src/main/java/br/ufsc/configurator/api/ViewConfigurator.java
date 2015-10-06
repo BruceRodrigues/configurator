@@ -29,14 +29,14 @@ public class ViewConfigurator {
 
 	private LinkedHashMap<Integer, List<ConfigField>> components = new LinkedHashMap<Integer, List<ConfigField>>();
 
-	private LinkedHashMap<FormFieldConstant<?>, List<ConfigColumn>> columns = new LinkedHashMap<FormFieldConstant<?>, List<ConfigColumn>>();
+	private LinkedHashMap<Object, List<ConfigColumn>> columns = new LinkedHashMap<Object, List<ConfigColumn>>();
 
-	private Map<FormFieldConstant<?>, List<CoreBlurListener<?>>> blurListeners = new HashMap<FormFieldConstant<?>, List<CoreBlurListener<?>>>();
-	private Map<FormFieldConstant<?>, List<CoreClickListener>> clickListeners = new HashMap<FormFieldConstant<?>, List<CoreClickListener>>();
-	private Map<FormFieldConstant<?>, List<CoreFocusListener>> focusListeners = new HashMap<FormFieldConstant<?>, List<CoreFocusListener>>();
-	private Map<FormFieldConstant<?>, List<CoreShortCutListener>> shortCutListeners = new HashMap<FormFieldConstant<?>, List<CoreShortCutListener>>();
-	private Map<FormFieldConstant<?>, List<CoreValueChangeListener>> valueChangeListeners = new HashMap<FormFieldConstant<?>, List<CoreValueChangeListener>>();
-	private Map<FormFieldConstant<?>, List<CoreGetDtoChangeListener<?>>> getDtoChangeListeners = new HashMap<FormFieldConstant<?>, List<CoreGetDtoChangeListener<?>>>();
+	private Map<Object, List<CoreBlurListener<?>>> blurListeners = new HashMap<Object, List<CoreBlurListener<?>>>();
+	private Map<Object, List<CoreClickListener>> clickListeners = new HashMap<Object, List<CoreClickListener>>();
+	private Map<Object, List<CoreFocusListener>> focusListeners = new HashMap<Object, List<CoreFocusListener>>();
+	private Map<Object, List<CoreShortCutListener>> shortCutListeners = new HashMap<Object, List<CoreShortCutListener>>();
+	private Map<Object, List<CoreValueChangeListener>> valueChangeListeners = new HashMap<Object, List<CoreValueChangeListener>>();
+	private Map<Object, List<CoreGetDtoChangeListener<?>>> getDtoChangeListeners = new HashMap<Object, List<CoreGetDtoChangeListener<?>>>();
 
 	@Getter
 	@Setter
@@ -72,7 +72,7 @@ public class ViewConfigurator {
 		return this.factories;
 	}
 
-	public void addBlurListener(FormFieldConstant<?> componentId, CoreBlurListener<?> listener) {
+	public void addBlurListener(Object componentId, CoreBlurListener<?> listener) {
 		if (this.blurListeners.containsKey(componentId)) {
 			this.blurListeners.get(componentId).add(listener);
 		} else {
@@ -82,7 +82,7 @@ public class ViewConfigurator {
 		}
 	}
 
-	public void addClickListener(FormFieldConstant<?> componentId, CoreClickListener listener) {
+	public void addClickListener(Object componentId, CoreClickListener listener) {
 		if (this.clickListeners.containsKey(componentId)) {
 			this.clickListeners.get(componentId).add(listener);
 		} else {
@@ -92,7 +92,7 @@ public class ViewConfigurator {
 		}
 	}
 
-	public void addFocusListener(FormFieldConstant<?> componentId, CoreFocusListener listener) {
+	public void addFocusListener(Object componentId, CoreFocusListener listener) {
 		if (this.focusListeners.containsKey(componentId)) {
 			this.focusListeners.get(componentId).add(listener);
 		} else {
@@ -102,7 +102,7 @@ public class ViewConfigurator {
 		}
 	}
 
-	public void addShortCutListener(FormFieldConstant<?> componentId, CoreShortCutListener listener) {
+	public void addShortCutListener(Object componentId, CoreShortCutListener listener) {
 		if (this.shortCutListeners.containsKey(componentId)) {
 			this.shortCutListeners.get(componentId).add(listener);
 		} else {
@@ -112,7 +112,7 @@ public class ViewConfigurator {
 		}
 	}
 
-	public void addValueChangeListener(FormFieldConstant<?> componentId, CoreValueChangeListener listener) {
+	public void addValueChangeListener(Object componentId, CoreValueChangeListener listener) {
 		if (this.valueChangeListeners.containsKey(componentId)) {
 			this.valueChangeListeners.get(componentId).add(listener);
 		} else {
@@ -122,8 +122,7 @@ public class ViewConfigurator {
 		}
 	}
 
-	public <DTO> void addGetDtoChangeListener(FormFieldConstant<?> componentId,
-			CoreGetDtoChangeListener<DTO> listener) {
+	public <DTO> void addGetDtoChangeListener(Object componentId, CoreGetDtoChangeListener<DTO> listener) {
 		if (this.getDtoChangeListeners.containsKey(componentId)) {
 			this.getDtoChangeListeners.get(componentId).add(listener);
 		} else {
@@ -133,27 +132,27 @@ public class ViewConfigurator {
 		}
 	}
 
-	public List<CoreBlurListener<?>> getBlurListener(FormFieldConstant<?> componentId) {
+	public List<CoreBlurListener<?>> getBlurListener(Object componentId) {
 		return this.blurListeners.get(componentId);
 	}
 
-	public List<CoreClickListener> getClickListener(FormFieldConstant<?> componentId) {
+	public List<CoreClickListener> getClickListener(Object componentId) {
 		return this.clickListeners.get(componentId);
 	}
 
-	public List<CoreFocusListener> getFocusListener(FormFieldConstant<?> componentId) {
+	public List<CoreFocusListener> getFocusListener(Object componentId) {
 		return this.focusListeners.get(componentId);
 	}
 
-	public List<CoreShortCutListener> getShortCutListener(FormFieldConstant<?> componentId) {
+	public List<CoreShortCutListener> getShortCutListener(Object componentId) {
 		return this.shortCutListeners.get(componentId);
 	}
 
-	public List<CoreValueChangeListener> getValueChangeListener(FormFieldConstant<?> componentId) {
+	public List<CoreValueChangeListener> getValueChangeListener(Object componentId) {
 		return this.valueChangeListeners.get(componentId);
 	}
 
-	public List<CoreGetDtoChangeListener<?>> getGetDtoChangeListener(FormFieldConstant<?> componentId) {
+	public List<CoreGetDtoChangeListener<?>> getGetDtoChangeListener(Object componentId) {
 		return this.getDtoChangeListeners.get(componentId);
 	}
 
@@ -194,7 +193,7 @@ public class ViewConfigurator {
 		return ((PanelFactory<?>) this.factories.getFactory(ConfigFieldType.PANEL)).createPanel(config);
 	}
 
-	public ConfigField removeComponent(FormFieldConstant<?> constant) {
+	public ConfigField removeComponent(Object constant) {
 		int line = this.getComponentLine(constant);
 		for (int index = 0; index < this.components.get(line).size(); index++) {
 			if (this.components.get(line).get(index).getFieldConstant().equals(constant)) {
@@ -204,7 +203,7 @@ public class ViewConfigurator {
 		return null;
 	}
 
-	private ConfigField removeConfigField(FormFieldConstant<?> constant) {
+	private ConfigField removeConfigField(Object constant) {
 		int line = this.getComponentLine(constant);
 		for (int index = 0; index < this.components.get(line).size(); index++) {
 			if (this.components.get(line).get(index).getFieldConstant().equals(constant)) {
@@ -215,7 +214,7 @@ public class ViewConfigurator {
 	}
 
 	@SuppressWarnings("unused")
-	private ConfigField removeConfigField(FormFieldConstant<?> constant, Integer line) {
+	private ConfigField removeConfigField(Object constant, Integer line) {
 		for (int index = 0; index < this.components.get(line).size(); index++) {
 			if (this.components.get(line).get(index).getFieldConstant().equals(constant)) {
 				return this.components.get(line).remove(index);
@@ -271,11 +270,11 @@ public class ViewConfigurator {
 		return this.components.get(line);
 	}
 
-	public List<ConfigColumn> getColumns(FormFieldConstant<?> tableConstant) {
+	public List<ConfigColumn> getColumns(Object tableConstant) {
 		return this.columns.get(tableConstant);
 	}
 
-	public ConfigField getComponentConfig(FormFieldConstant<?> constant) {
+	public ConfigField getComponentConfig(Object constant) {
 		int line = this.getComponentLine(constant);
 		for (int index = 0; index < this.components.get(line).size(); index++) {
 			if (this.components.get(line).get(index).getFieldConstant().equals(constant)) {
@@ -285,7 +284,7 @@ public class ViewConfigurator {
 		return null;
 	}
 
-	public Integer getComponentLine(FormFieldConstant<?> componentConstant) {
+	public Integer getComponentLine(Object componentConstant) {
 		Iterator<Entry<Integer, List<ConfigField>>> iterator = this.components.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Entry<Integer, List<ConfigField>> entry = iterator.next();
@@ -305,7 +304,7 @@ public class ViewConfigurator {
 	 * @param componentConstant
 	 * @return
 	 */
-	public Integer contains(FormFieldConstant<?> componentConstant) {
+	public Integer contains(Object componentConstant) {
 		return this.getComponentLine(componentConstant);
 	}
 
@@ -317,7 +316,7 @@ public class ViewConfigurator {
 		return cloneList;
 	}
 
-	public boolean moveToLine(FormFieldConstant<?> componentConstant, Integer destinyLine) {
+	public boolean moveToLine(Object componentConstant, Integer destinyLine) {
 		Integer line = this.getComponentLine(componentConstant);
 		if (line != -1) {
 			ConfigField component = this.removeConfigField(componentConstant);
@@ -327,16 +326,16 @@ public class ViewConfigurator {
 		return false;
 	}
 
-	public void moveTo(FormFieldConstant<?> componentConstant, Integer line, int position) {
+	public void moveTo(Object componentConstant, Integer line, int position) {
 		this.moveToLine(componentConstant, line);
 		this.moveToPosition(componentConstant, position, line);
 	}
 
-	public void moveToPosition(FormFieldConstant<?> componentConstant, int position, Integer componentLine) {
+	public void moveToPosition(Object componentConstant, int position, Integer componentLine) {
 		this.addConfigField(componentLine, position, this.removeConfigField(componentConstant));
 	}
 
-	public boolean moveToPosition(FormFieldConstant<?> componentConstant, int position) {
+	public boolean moveToPosition(Object componentConstant, int position) {
 		int line = this.getComponentLine(componentConstant);
 		if (line != -1) {
 			this.moveToPosition(componentConstant, position, line);

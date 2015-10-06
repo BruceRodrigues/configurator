@@ -1,6 +1,5 @@
 package br.ufsc.configurator.api.field;
 
-import br.ufsc.configurator.api.FormFieldConstant;
 import br.ufsc.configurator.api.field.factory.SubComponentFactory;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,13 +14,13 @@ public class ConfigSubComponent extends ConfigField {
 
 	private String parentWidth;
 
-	public ConfigSubComponent(Integer line, Integer position, FormFieldConstant<?> fieldConstant, String caption,
+	public ConfigSubComponent(Integer line, Integer position, Object fieldConstant, String caption,
 			String width, SubComponentFactory formField) {
 		super(line, position, fieldConstant, caption, width, true, ConfigFieldType.SUBCOMPONENT);
 		this.formField = formField;
 	}
 
-	public ConfigSubComponent(Integer line, Integer position, FormFieldConstant<?> fieldConstant, String caption,
+	public ConfigSubComponent(Integer line, Integer position, Object fieldConstant, String caption,
 			String width, SubComponentFactory formField, ConfigFieldType type) {
 		super(line, position, fieldConstant, caption, width, true, type);
 		this.formField = formField;

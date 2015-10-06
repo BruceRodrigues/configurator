@@ -19,10 +19,10 @@ import br.ufsc.configurator.api.strategy.TextFieldStrategy;
 
 public class FindStrategyHelper {
 
-	public static ComponentStrategy<?> getComponentStrategy(FormFieldConstant<?> componentId,
-			LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
-		Collection<LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> values = components.values();
-		for (LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>> hash : values) {
+	public static ComponentStrategy<?> getComponentStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
+		Collection<LinkedHashMap<Object, ComponentStrategy<?>>> values = components.values();
+		for (LinkedHashMap<Object, ComponentStrategy<?>> hash : values) {
 			if (hash.containsKey(componentId)) {
 				return hash.get(componentId);
 			}
@@ -30,8 +30,8 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static TextFieldStrategy<?> getTextFieldStrategy(FormFieldConstant<?> componentId,
-			LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static TextFieldStrategy<?> getTextFieldStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if (component != null && component instanceof TextFieldStrategy<?>) {
 			return (TextFieldStrategy<?>) component;
@@ -39,7 +39,7 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static TableStrategy<?> getTableStrategy(FormFieldConstant<?> componentId, LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static TableStrategy<?> getTableStrategy(Object componentId, LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if (component != null && component instanceof TableStrategy<?>) {
 			return (TableStrategy<?>) component;
@@ -47,8 +47,8 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static SubComponentStrategy<?> getSubComponentStrategy(FormFieldConstant<?> componentId,
-			LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static SubComponentStrategy<?> getSubComponentStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if (component != null && component instanceof SubComponentStrategy<?>) {
 			return (SubComponentStrategy<?>) component;
@@ -56,8 +56,8 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static ComboBoxStrategy<?> getComboBoxStrategy(FormFieldConstant<?> componentId,
-			LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static ComboBoxStrategy<?> getComboBoxStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if (component != null && component instanceof ComboBoxStrategy<?>) {
 			return (ComboBoxStrategy<?>) component;
@@ -65,7 +65,7 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static LabelStrategy<?> getLabelStrategy(FormFieldConstant<?> componentId, LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static LabelStrategy<?> getLabelStrategy(Object componentId, LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if (component != null && component instanceof LabelStrategy<?>) {
 			return (LabelStrategy<?>) component;
@@ -73,8 +73,8 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static EmbeddedStrategy<?> getEmbeddedStrategy(FormFieldConstant<?> componentId,
-			LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static EmbeddedStrategy<?> getEmbeddedStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if (component != null && component instanceof EmbeddedStrategy<?>) {
 			return (EmbeddedStrategy<?>) component;
@@ -82,7 +82,7 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static RadioStrategy<?> getRadioStrategy(FormFieldConstant<?> componentId, LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static RadioStrategy<?> getRadioStrategy(Object componentId, LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if (component != null && component instanceof RadioStrategy<?>) {
 			return (RadioStrategy<?>) component;
@@ -90,8 +90,8 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static CheckBoxStrategy<?> getCheckBoxStrategy(FormFieldConstant<?> componentId,
-			LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static CheckBoxStrategy<?> getCheckBoxStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if (component != null && CheckBoxStrategy.class.isAssignableFrom(component.getClass())) {
 			return (CheckBoxStrategy<?>) component;
@@ -99,7 +99,7 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static PanelStrategy<?> getPanelStrategy(FormFieldConstant<?> componentId, LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static PanelStrategy<?> getPanelStrategy(Object componentId, LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if (component != null && component instanceof PanelStrategy<?>) {
 			return (PanelStrategy<?>) component;
@@ -107,8 +107,8 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static DynamicListStrategy<?> getDynamicListStrategy(FormFieldConstant<?> componentId,
-			LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static DynamicListStrategy<?> getDynamicListStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if (component != null && component instanceof DynamicListStrategy<?>) {
 			return (DynamicListStrategy<?>) component;
@@ -116,8 +116,8 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static GenericSuggestFieldStrategy<?> getGenericSuggestFieldStrategy(FormFieldConstant<?> componentId,
-			LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static GenericSuggestFieldStrategy<?> getGenericSuggestFieldStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if (component != null && component instanceof GenericSuggestFieldStrategy<?>) {
 			return (GenericSuggestFieldStrategy<?>) component;
@@ -125,7 +125,7 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static SuggestFieldStrategy<?> getSuggestFieldStrategy(FormFieldConstant<?> componentId, LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components) {
+	public static SuggestFieldStrategy<?> getSuggestFieldStrategy(Object componentId, LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
 		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
 		if(component != null && component instanceof SuggestFieldStrategy<?>) {
 			return (SuggestFieldStrategy<?>) component;

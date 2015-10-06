@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import br.ufsc.configurator.api.BaseConfigurableView;
 import br.ufsc.configurator.api.FindStrategyHelper;
-import br.ufsc.configurator.api.FormField;
-import br.ufsc.configurator.api.FormFieldConstant;
 import br.ufsc.configurator.api.ViewConfigurator;
-import br.ufsc.configurator.api.binder.FieldBinder;
 import br.ufsc.configurator.api.builder.ConfiguratorBuilder;
 import br.ufsc.configurator.api.converter.CoreWidthConverter;
 import br.ufsc.configurator.api.field.ConfigField;
@@ -35,11 +32,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @SuppressWarnings("rawtypes")
-public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigurableView, FormField<FORM_TYPE> {
+public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigurableView {
 
 	protected static final Logger logger = LoggerFactory.getLogger(BaseConfigurableViewImpl.class);
 
-	protected LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components = new LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>>();
+	protected LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components = new LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>>();
 
 	@Getter
 	protected ViewConfigurator config;
@@ -47,8 +44,6 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 	protected ConfiguratorBuilder builder;
 
 	protected LayoutStrategy layoutStrategy;
-
-	protected FieldBinder fieldBinder;
 
 	private String viewWidth;
 
@@ -62,15 +57,10 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 	private void init() {
 		this.createConfig();
 		this.createBuilder();
-		this.fieldBinder = this.createFieldBinder();
 	}
 
 	private LayoutStrategy createLayoutStrategy() {
 		return this.config.createLayout(null);
-	}
-
-	protected FieldBinder createFieldBinder() {
-		return new FieldBinder<FORM_TYPE>(this.getTypeClass());
 	}
 
 	protected void createConfig() {
@@ -98,20 +88,16 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 		this.components = this.builder.buildComponents(this.config);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void render() {
 		for (int line = 0; line < this.config.getTotalLines(); line++) {
 			if (!this.components.get(line).isEmpty()) {
-				Iterator<FormFieldConstant<?>> it = this.components.get(line).keySet().iterator();
+				Iterator<Object> it = this.components.get(line).keySet().iterator();
 				while (it.hasNext()) {
-					FormFieldConstant<?> constant = it.next();
+					Object constant = it.next();
 					ComponentStrategy<?> c = this.components.get(line).get(constant);
 					ConfigField configField = this.config.getComponentConfig(constant);
 					c.setWidth(CoreWidthConverter.calcWidth(configField.getOptions().width, this.viewWidth));
-					if (c instanceof SubComponentStrategy) {
-						this.fieldBinder.bind(constant, ((SubComponentStrategy) c).getFormField());
-					} else if (c.getComponent() instanceof FormField<?>) {
-						this.fieldBinder.bind(constant, (FormField) c.getComponent());
-					}
 					this.layoutStrategy.addComponent(c, configField.getOptions().aligment);
 				}
 			}
@@ -121,90 +107,63 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void markInvalid(Exception e) {
-		this.fieldBinder.markInvalid(null);
-	}
-
-	@Override
-	public void setAlias(String alias) {
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
 	public void setFieldValue(FORM_TYPE value) {
 		if (value instanceof Collection) {
 			Iterator it = ((Collection) value).iterator();
 			while (it.hasNext()) {
-				Object row = it.next();
-				this.fieldBinder.fillIn(row);
 				if (it.hasNext()) {
 					this.createComponents(this.config.getFactories());
 					this.render();
 				}
 			}
-		} else {
-			this.fieldBinder.fillIn(value);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public FORM_TYPE getFieldValue() {
-		return (FORM_TYPE) this.fieldBinder.fillOut();
-	}
-
-	@Override
-	public void clearFieldValue() {
-		this.fieldBinder.clearFieldValue();
-	}
-
-	public GenericSuggestFieldStrategy<?> getGenericSuggestFieldStrategy(FormFieldConstant<?> componentId) {
+	public GenericSuggestFieldStrategy<?> getGenericSuggestFieldStrategy(Object componentId) {
 		return FindStrategyHelper.getGenericSuggestFieldStrategy(componentId, this.components);
 	}
 
-	public TextFieldStrategy<?> getTextFieldStrategy(FormFieldConstant<?> componentId) {
+	public TextFieldStrategy<?> getTextFieldStrategy(Object componentId) {
 		return FindStrategyHelper.getTextFieldStrategy(componentId, this.components);
 	}
 
-	public TableStrategy<?> getTableStrategy(FormFieldConstant<?> componentId) {
+	public TableStrategy<?> getTableStrategy(Object componentId) {
 		return FindStrategyHelper.getTableStrategy(componentId, this.components);
 	}
 
-	public SubComponentStrategy<?> getSubComponentStrategy(FormFieldConstant<?> componentId) {
+	public SubComponentStrategy<?> getSubComponentStrategy(Object componentId) {
 		return FindStrategyHelper.getSubComponentStrategy(componentId, this.components);
 	}
 
-	public ComboBoxStrategy<?> getComboBoxStrategy(FormFieldConstant<?> componentId) {
+	public ComboBoxStrategy<?> getComboBoxStrategy(Object componentId) {
 		return FindStrategyHelper.getComboBoxStrategy(componentId, this.components);
 	}
 
-	public LabelStrategy<?> getLabelStrategy(FormFieldConstant<?> componentId) {
+	public LabelStrategy<?> getLabelStrategy(Object componentId) {
 		return FindStrategyHelper.getLabelStrategy(componentId, this.components);
 	}
 
-	public EmbeddedStrategy<?> getEmbeddedStrategy(FormFieldConstant<?> componentId) {
+	public EmbeddedStrategy<?> getEmbeddedStrategy(Object componentId) {
 		return FindStrategyHelper.getEmbeddedStrategy(componentId, this.components);
 	}
 
-	public RadioStrategy<?> getRadioStrategy(FormFieldConstant<?> componentId) {
+	public RadioStrategy<?> getRadioStrategy(Object componentId) {
 		return FindStrategyHelper.getRadioStrategy(componentId, this.components);
 	}
 
-	public CheckBoxStrategy<?> getCheckBoxStrategy(FormFieldConstant<?> componentId) {
+	public CheckBoxStrategy<?> getCheckBoxStrategy(Object componentId) {
 		return FindStrategyHelper.getCheckBoxStrategy(componentId, this.components);
 	}
 
-	public PanelStrategy<?> getPanelStrategy(FormFieldConstant<?> componentId) {
+	public PanelStrategy<?> getPanelStrategy(Object componentId) {
 		return FindStrategyHelper.getPanelStrategy(componentId, this.components);
 	}
 
-	public DynamicListStrategy<?> getDynamicListStrategy(FormFieldConstant<?> componentId) {
+	public DynamicListStrategy<?> getDynamicListStrategy(Object componentId) {
 		return FindStrategyHelper.getDynamicListStrategy(componentId, this.components);
 	}
 
-	public SuggestFieldStrategy<?> getSuggestFieldStrategy(FormFieldConstant<?> componentId) {
+	public SuggestFieldStrategy<?> getSuggestFieldStrategy(Object componentId) {
 		return FindStrategyHelper.getSuggestFieldStrategy(componentId, this.components);
 	}
 

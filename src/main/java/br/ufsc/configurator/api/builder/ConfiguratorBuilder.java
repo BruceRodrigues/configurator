@@ -6,7 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.ufsc.configurator.api.FormFieldConstant;
 import br.ufsc.configurator.api.ViewConfigurator;
 import br.ufsc.configurator.api.field.ConfigField;
 import br.ufsc.configurator.api.field.ConfigField.ConfigFieldType;
@@ -34,19 +33,18 @@ public class ConfiguratorBuilder {
 	protected static final Logger logger = LoggerFactory.getLogger(ConfiguratorBuilder.class);
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> buildComponents(
+	public LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> buildComponents(
 			ViewConfigurator config) {
 
-		LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>> components = new LinkedHashMap<Integer, LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>>();
+		LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components = new LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>>();
 
 		ViewConfiguration factories = config.getFactories();
 
 		for (Integer line = 0; line < config.getTotalLines(); line++) {
-			LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>> fields = new LinkedHashMap<FormFieldConstant<?>, ComponentStrategy<?>>();
+			LinkedHashMap<Object, ComponentStrategy<?>> fields = new LinkedHashMap<Object, ComponentStrategy<?>>();
 			List<ConfigField> inputs = config.getComponents(line);
 			for (ConfigField configField : inputs) {
-				FormFieldConstant<?> formField = configField.getFieldConstant();
-				String field = formField.getDescription();
+				Object formField = configField.getFieldConstant();
 				try {
 					ComponentStrategy<?> componentField = null;
 					if (configField.getCustomFactory() != null) {
@@ -79,7 +77,7 @@ public class ConfiguratorBuilder {
 					fields.put(formField, componentField);
 					this.addListener(componentField, formField, config);
 				} catch (Exception e) {
-					logger.error("Erro na criação de fields - " + field, e);
+					logger.error("Erro na criação de fields", e);
 				}
 			}
 			components.put(line, fields);
@@ -88,7 +86,7 @@ public class ConfiguratorBuilder {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void addListener(ComponentStrategy<?> component, FormFieldConstant<?> id, ViewConfigurator config) {
+	private void addListener(ComponentStrategy<?> component, Object id, ViewConfigurator config) {
 		List<CoreBlurListener<?>> blurListeners = config.getBlurListener(id);
 		if (blurListeners != null) {
 			for (@SuppressWarnings("rawtypes")

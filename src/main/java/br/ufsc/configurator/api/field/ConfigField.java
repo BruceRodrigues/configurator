@@ -1,7 +1,6 @@
 package br.ufsc.configurator.api.field;
 
 import br.ufsc.configurator.api.ConfigOptions;
-import br.ufsc.configurator.api.FormFieldConstant;
 import br.ufsc.configurator.api.field.factory.BaseFactory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +17,7 @@ public class ConfigField {
 
 	private Integer position;
 
-	private FormFieldConstant<?> fieldConstant;
+	private Object fieldConstant;
 
 	protected ConfigOptions options = new ConfigOptions();
 
@@ -29,7 +28,7 @@ public class ConfigField {
 	@SuppressWarnings("rawtypes")
 	protected BaseFactory customFactory;
 
-	public ConfigField(Integer line, Integer position, FormFieldConstant<?> fieldConstant, String caption, String width,
+	public ConfigField(Integer line, Integer position, Object fieldConstant, String caption, String width,
 			boolean enabled, ConfigFieldType type, Integer maxLength) {
 		this.line = line;
 		this.position = position;
@@ -41,17 +40,17 @@ public class ConfigField {
 		this.options.maxLength = maxLength;
 	}
 
-	public ConfigField(Integer line, Integer position, FormFieldConstant<?> fieldConstant, String caption, String width,
+	public ConfigField(Integer line, Integer position, Object fieldConstant, String caption, String width,
 			boolean enabled, ConfigFieldType type) {
 		this(line, position, fieldConstant, caption, width, enabled, type, null);
 	}
 
-	public ConfigField(FormFieldConstant<?> fieldConstant, String caption, String width, boolean enabled,
+	public ConfigField(Object fieldConstant, String caption, String width, boolean enabled,
 			ConfigFieldType type) {
 		this(0, -1, fieldConstant, caption, width, enabled, type);
 	}
 
-	public ConfigField(Integer line, Integer position, FormFieldConstant<?> constant, ConfigOptions options,
+	public ConfigField(Integer line, Integer position, Object constant, ConfigOptions options,
 			ConfigFieldType type) {
 		this(line, position, constant, options.caption, options.width, options.enabled, type);
 	}
@@ -76,11 +75,11 @@ public class ConfigField {
 		this.position = position;
 	}
 
-	public FormFieldConstant<?> getFieldConstant() {
+	public Object getFieldConstant() {
 		return fieldConstant;
 	}
 
-	public void setFieldConstant(FormFieldConstant<?> fieldConstant) {
+	public void setFieldConstant(Object fieldConstant) {
 		this.fieldConstant = fieldConstant;
 	}
 
