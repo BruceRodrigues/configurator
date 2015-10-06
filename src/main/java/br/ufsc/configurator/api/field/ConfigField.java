@@ -45,18 +45,16 @@ public class ConfigField {
 		this(line, position, fieldConstant, caption, width, enabled, type, null);
 	}
 
-	public ConfigField(Object fieldConstant, String caption, String width, boolean enabled,
-			ConfigFieldType type) {
+	public ConfigField(Object fieldConstant, String caption, String width, boolean enabled, ConfigFieldType type) {
 		this(0, -1, fieldConstant, caption, width, enabled, type);
 	}
 
-	public ConfigField(Integer line, Integer position, Object constant, ConfigOptions options,
-			ConfigFieldType type) {
+	public ConfigField(Integer line, Integer position, Object constant, ConfigOptions options, ConfigFieldType type) {
 		this(line, position, constant, options.caption, options.width, options.enabled, type);
 	}
 
 	public enum ConfigFieldType {
-		TEXTFIELD, TABLE, COLUMN, SUBCOMPONENT, TITLE, COMBOBOX, LABEL, EMBEDDED, RADIO, CHECKBOX, PANEL, VERTICALTABSHEET, DYNAMICLIST, GENERICSUGGESTFIELD, SUGGESTFIELD;
+		TEXTFIELD, TABLE, COLUMN, SUBCOMPONENT, TITLE, COMBOBOX, LABEL, EMBEDDED, RADIO, CHECKBOX, PANEL;
 	}
 
 	public Integer getLine() {

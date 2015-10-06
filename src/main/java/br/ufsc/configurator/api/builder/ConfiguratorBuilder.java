@@ -57,7 +57,6 @@ public class ConfiguratorBuilder {
 							break;
 						case PANEL:
 						case SUBCOMPONENT:
-						case VERTICALTABSHEET:
 							ConfigSubComponent panelConfig = (ConfigSubComponent) configField;
 							panelConfig.setConfiguration(config.getFactories());
 							panelConfig.setParentWidth(config.getViewWidth());
