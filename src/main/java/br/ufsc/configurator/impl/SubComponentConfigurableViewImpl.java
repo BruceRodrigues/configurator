@@ -1,22 +1,21 @@
 package br.ufsc.configurator.impl;
 
 import br.ufsc.configurator.api.field.ConfigField.ConfigFieldType;
+import br.ufsc.configurator.api.adapter.ComponentAdapter;
+import br.ufsc.configurator.api.adapter.PanelAdapter;
+import br.ufsc.configurator.api.adapter.SubComponentAdapter;
 import br.ufsc.configurator.api.field.ConfigSubComponent;
 import br.ufsc.configurator.api.field.factory.PanelFactory;
 import br.ufsc.configurator.api.field.factory.SubComponentFactory;
-import br.ufsc.configurator.api.field.factory.VerticalTabSheetFactory;
-import br.ufsc.configurator.api.strategy.ComponentStrategy;
-import br.ufsc.configurator.api.strategy.PanelStrategy;
-import br.ufsc.configurator.api.strategy.SubComponentStrategy;
 
 public abstract class SubComponentConfigurableViewImpl<FORM_TYPE, SUBCOMPONENT_TYPE>
-		extends BaseConfigurableViewImpl<FORM_TYPE> implements SubComponentFactory<SUBCOMPONENT_TYPE>,
-		PanelFactory<SUBCOMPONENT_TYPE>, VerticalTabSheetFactory<SUBCOMPONENT_TYPE> {
+		extends BaseConfigurableViewImpl<FORM_TYPE>
+		implements SubComponentFactory<SUBCOMPONENT_TYPE>, PanelFactory<SUBCOMPONENT_TYPE> {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public ComponentStrategy<SUBCOMPONENT_TYPE> createComponent(ConfigSubComponent config) {
-		SubComponentStrategy<SUBCOMPONENT_TYPE> sub = (SubComponentStrategy<SUBCOMPONENT_TYPE>) config
+	public ComponentAdapter<SUBCOMPONENT_TYPE> createComponent(ConfigSubComponent config) {
+		SubComponentAdapter<SUBCOMPONENT_TYPE> sub = (SubComponentAdapter<SUBCOMPONENT_TYPE>) config
 				.getConfiguration().getFactory(ConfigFieldType.SUBCOMPONENT).createComponent(config);
 		sub.addComponent(this.generateView(config.getConfiguration(), config.getParentWidth()),
 				config.getOptions().aligment);
@@ -25,8 +24,8 @@ public abstract class SubComponentConfigurableViewImpl<FORM_TYPE, SUBCOMPONENT_T
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public PanelStrategy<SUBCOMPONENT_TYPE> createPanel(ConfigSubComponent configSubComponent) {
-		PanelStrategy<SUBCOMPONENT_TYPE> sub = (PanelStrategy<SUBCOMPONENT_TYPE>) ((PanelFactory<SUBCOMPONENT_TYPE>) configSubComponent
+	public PanelAdapter<SUBCOMPONENT_TYPE> createPanel(ConfigSubComponent configSubComponent) {
+		PanelAdapter<SUBCOMPONENT_TYPE> sub = (PanelAdapter<SUBCOMPONENT_TYPE>) ((PanelFactory<SUBCOMPONENT_TYPE>) configSubComponent
 				.getConfiguration().getFactory(ConfigFieldType.PANEL)).createPanel(configSubComponent);
 		sub.addComponent(this.generateView(configSubComponent.getConfiguration(), configSubComponent.getParentWidth()),
 				configSubComponent.getOptions().aligment);

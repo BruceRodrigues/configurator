@@ -1,10 +1,10 @@
-package br.ufsc.configurator.api.strategy;
+package br.ufsc.configurator.api.adapter;
 
 import java.util.List;
 
 import br.ufsc.configurator.api.field.ConfigColumn;
 
-public interface TableStrategy<COMPONENT_TYPE> extends ComponentStrategy<COMPONENT_TYPE> {
+public interface TableAdapter<COMPONENT_TYPE> extends HasValueAdapter<COMPONENT_TYPE> {
 
 	void createColumns(List<ConfigColumn> columns);
 

@@ -1,6 +1,6 @@
-package br.ufsc.configurator.api.strategy;
+package br.ufsc.configurator.api.adapter;
 
-public interface ComponentStrategy<COMPONENT_TYPE> {
+public interface ComponentAdapter<COMPONENT_TYPE> {
 
 	void setWidth(String width);
 

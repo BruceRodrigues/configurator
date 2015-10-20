@@ -3,26 +3,23 @@ package br.ufsc.configurator.api;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
-import br.ufsc.configurator.api.strategy.CheckBoxStrategy;
-import br.ufsc.configurator.api.strategy.ComboBoxStrategy;
-import br.ufsc.configurator.api.strategy.ComponentStrategy;
-import br.ufsc.configurator.api.strategy.DynamicListStrategy;
-import br.ufsc.configurator.api.strategy.EmbeddedStrategy;
-import br.ufsc.configurator.api.strategy.GenericSuggestFieldStrategy;
-import br.ufsc.configurator.api.strategy.LabelStrategy;
-import br.ufsc.configurator.api.strategy.PanelStrategy;
-import br.ufsc.configurator.api.strategy.RadioStrategy;
-import br.ufsc.configurator.api.strategy.SubComponentStrategy;
-import br.ufsc.configurator.api.strategy.SuggestFieldStrategy;
-import br.ufsc.configurator.api.strategy.TableStrategy;
-import br.ufsc.configurator.api.strategy.TextFieldStrategy;
+import br.ufsc.configurator.api.adapter.CheckBoxAdapter;
+import br.ufsc.configurator.api.adapter.ComboBoxAdapter;
+import br.ufsc.configurator.api.adapter.ComponentAdapter;
+import br.ufsc.configurator.api.adapter.EmbeddedAdapter;
+import br.ufsc.configurator.api.adapter.LabelAdapter;
+import br.ufsc.configurator.api.adapter.PanelAdapter;
+import br.ufsc.configurator.api.adapter.RadioAdapter;
+import br.ufsc.configurator.api.adapter.SubComponentAdapter;
+import br.ufsc.configurator.api.adapter.TableAdapter;
+import br.ufsc.configurator.api.adapter.TextFieldAdapter;
 
 public class FindStrategyHelper {
 
-	public static ComponentStrategy<?> getComponentStrategy(Object componentId,
-			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		Collection<LinkedHashMap<Object, ComponentStrategy<?>>> values = components.values();
-		for (LinkedHashMap<Object, ComponentStrategy<?>> hash : values) {
+	public static ComponentAdapter<?> getComponentStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components) {
+		Collection<LinkedHashMap<Object, ComponentAdapter<?>>> values = components.values();
+		for (LinkedHashMap<Object, ComponentAdapter<?>> hash : values) {
 			if (hash.containsKey(componentId)) {
 				return hash.get(componentId);
 			}
@@ -30,105 +27,83 @@ public class FindStrategyHelper {
 		return null;
 	}
 
-	public static TextFieldStrategy<?> getTextFieldStrategy(Object componentId,
-			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if (component != null && component instanceof TextFieldStrategy<?>) {
-			return (TextFieldStrategy<?>) component;
+	public static TextFieldAdapter<?> getTextFieldStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components) {
+		ComponentAdapter<?> component = getComponentStrategy(componentId, components);
+		if (component != null && component instanceof TextFieldAdapter<?>) {
+			return (TextFieldAdapter<?>) component;
 		}
 		return null;
 	}
 
-	public static TableStrategy<?> getTableStrategy(Object componentId, LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if (component != null && component instanceof TableStrategy<?>) {
-			return (TableStrategy<?>) component;
+	public static TableAdapter<?> getTableStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components) {
+		ComponentAdapter<?> component = getComponentStrategy(componentId, components);
+		if (component != null && component instanceof TableAdapter<?>) {
+			return (TableAdapter<?>) component;
 		}
 		return null;
 	}
 
-	public static SubComponentStrategy<?> getSubComponentStrategy(Object componentId,
-			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if (component != null && component instanceof SubComponentStrategy<?>) {
-			return (SubComponentStrategy<?>) component;
+	public static SubComponentAdapter<?> getSubComponentStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components) {
+		ComponentAdapter<?> component = getComponentStrategy(componentId, components);
+		if (component != null && component instanceof SubComponentAdapter<?>) {
+			return (SubComponentAdapter<?>) component;
 		}
 		return null;
 	}
 
-	public static ComboBoxStrategy<?> getComboBoxStrategy(Object componentId,
-			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if (component != null && component instanceof ComboBoxStrategy<?>) {
-			return (ComboBoxStrategy<?>) component;
+	public static ComboBoxAdapter<?> getComboBoxStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components) {
+		ComponentAdapter<?> component = getComponentStrategy(componentId, components);
+		if (component != null && component instanceof ComboBoxAdapter<?>) {
+			return (ComboBoxAdapter<?>) component;
 		}
 		return null;
 	}
 
-	public static LabelStrategy<?> getLabelStrategy(Object componentId, LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if (component != null && component instanceof LabelStrategy<?>) {
-			return (LabelStrategy<?>) component;
+	public static LabelAdapter<?> getLabelStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components) {
+		ComponentAdapter<?> component = getComponentStrategy(componentId, components);
+		if (component != null && component instanceof LabelAdapter<?>) {
+			return (LabelAdapter<?>) component;
 		}
 		return null;
 	}
 
-	public static EmbeddedStrategy<?> getEmbeddedStrategy(Object componentId,
-			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if (component != null && component instanceof EmbeddedStrategy<?>) {
-			return (EmbeddedStrategy<?>) component;
+	public static EmbeddedAdapter<?> getEmbeddedStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components) {
+		ComponentAdapter<?> component = getComponentStrategy(componentId, components);
+		if (component != null && component instanceof EmbeddedAdapter<?>) {
+			return (EmbeddedAdapter<?>) component;
 		}
 		return null;
 	}
 
-	public static RadioStrategy<?> getRadioStrategy(Object componentId, LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if (component != null && component instanceof RadioStrategy<?>) {
-			return (RadioStrategy<?>) component;
+	public static RadioAdapter<?> getRadioStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components) {
+		ComponentAdapter<?> component = getComponentStrategy(componentId, components);
+		if (component != null && component instanceof RadioAdapter<?>) {
+			return (RadioAdapter<?>) component;
 		}
 		return null;
 	}
 
-	public static CheckBoxStrategy<?> getCheckBoxStrategy(Object componentId,
-			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if (component != null && CheckBoxStrategy.class.isAssignableFrom(component.getClass())) {
-			return (CheckBoxStrategy<?>) component;
+	public static CheckBoxAdapter<?> getCheckBoxStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components) {
+		ComponentAdapter<?> component = getComponentStrategy(componentId, components);
+		if (component != null && CheckBoxAdapter.class.isAssignableFrom(component.getClass())) {
+			return (CheckBoxAdapter<?>) component;
 		}
 		return null;
 	}
 
-	public static PanelStrategy<?> getPanelStrategy(Object componentId, LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if (component != null && component instanceof PanelStrategy<?>) {
-			return (PanelStrategy<?>) component;
-		}
-		return null;
-	}
-
-	public static DynamicListStrategy<?> getDynamicListStrategy(Object componentId,
-			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if (component != null && component instanceof DynamicListStrategy<?>) {
-			return (DynamicListStrategy<?>) component;
-		}
-		return null;
-	}
-
-	public static GenericSuggestFieldStrategy<?> getGenericSuggestFieldStrategy(Object componentId,
-			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if (component != null && component instanceof GenericSuggestFieldStrategy<?>) {
-			return (GenericSuggestFieldStrategy<?>) component;
-		}
-		return null;
-	}
-
-	public static SuggestFieldStrategy<?> getSuggestFieldStrategy(Object componentId, LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components) {
-		ComponentStrategy<?> component = getComponentStrategy(componentId, components);
-		if(component != null && component instanceof SuggestFieldStrategy<?>) {
-			return (SuggestFieldStrategy<?>) component;
+	public static PanelAdapter<?> getPanelStrategy(Object componentId,
+			LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components) {
+		ComponentAdapter<?> component = getComponentStrategy(componentId, components);
+		if (component != null && component instanceof PanelAdapter<?>) {
+			return (PanelAdapter<?>) component;
 		}
 		return null;
 	}

@@ -10,24 +10,21 @@ import org.slf4j.LoggerFactory;
 import br.ufsc.configurator.api.BaseConfigurableView;
 import br.ufsc.configurator.api.FindStrategyHelper;
 import br.ufsc.configurator.api.ViewConfigurator;
+import br.ufsc.configurator.api.adapter.CheckBoxAdapter;
+import br.ufsc.configurator.api.adapter.ComboBoxAdapter;
+import br.ufsc.configurator.api.adapter.ComponentAdapter;
+import br.ufsc.configurator.api.adapter.EmbeddedAdapter;
+import br.ufsc.configurator.api.adapter.LabelAdapter;
+import br.ufsc.configurator.api.adapter.LayoutAdapter;
+import br.ufsc.configurator.api.adapter.PanelAdapter;
+import br.ufsc.configurator.api.adapter.RadioAdapter;
+import br.ufsc.configurator.api.adapter.SubComponentAdapter;
+import br.ufsc.configurator.api.adapter.TableAdapter;
+import br.ufsc.configurator.api.adapter.TextFieldAdapter;
 import br.ufsc.configurator.api.builder.ConfiguratorBuilder;
 import br.ufsc.configurator.api.converter.CoreWidthConverter;
 import br.ufsc.configurator.api.field.ConfigField;
 import br.ufsc.configurator.api.field.ViewConfiguration;
-import br.ufsc.configurator.api.strategy.CheckBoxStrategy;
-import br.ufsc.configurator.api.strategy.ComboBoxStrategy;
-import br.ufsc.configurator.api.strategy.ComponentStrategy;
-import br.ufsc.configurator.api.strategy.DynamicListStrategy;
-import br.ufsc.configurator.api.strategy.EmbeddedStrategy;
-import br.ufsc.configurator.api.strategy.GenericSuggestFieldStrategy;
-import br.ufsc.configurator.api.strategy.LabelStrategy;
-import br.ufsc.configurator.api.strategy.LayoutStrategy;
-import br.ufsc.configurator.api.strategy.PanelStrategy;
-import br.ufsc.configurator.api.strategy.RadioStrategy;
-import br.ufsc.configurator.api.strategy.SubComponentStrategy;
-import br.ufsc.configurator.api.strategy.SuggestFieldStrategy;
-import br.ufsc.configurator.api.strategy.TableStrategy;
-import br.ufsc.configurator.api.strategy.TextFieldStrategy;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,14 +33,14 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 
 	protected static final Logger logger = LoggerFactory.getLogger(BaseConfigurableViewImpl.class);
 
-	protected LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>> components = new LinkedHashMap<Integer, LinkedHashMap<Object, ComponentStrategy<?>>>();
+	protected LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components = new LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>>();
 
 	@Getter
 	protected ViewConfigurator config;
 
 	protected ConfiguratorBuilder builder;
 
-	protected LayoutStrategy layoutStrategy;
+	protected LayoutAdapter layoutStrategy;
 
 	private String viewWidth;
 
@@ -59,7 +56,7 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 		this.createBuilder();
 	}
 
-	private LayoutStrategy createLayoutStrategy() {
+	private LayoutAdapter createLayoutStrategy() {
 		return this.config.createLayout(null);
 	}
 
@@ -72,7 +69,7 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 	}
 
 	@Override
-	public ComponentStrategy generateView(ViewConfiguration configuration, String viewWidth) {
+	public ComponentAdapter generateView(ViewConfiguration configuration, String viewWidth) {
 		this.viewWidth = viewWidth;
 		this.config.setViewWidth(viewWidth);
 		this.createComponents(configuration);
@@ -95,7 +92,7 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 				Iterator<Object> it = this.components.get(line).keySet().iterator();
 				while (it.hasNext()) {
 					Object constant = it.next();
-					ComponentStrategy<?> c = this.components.get(line).get(constant);
+					ComponentAdapter<?> c = this.components.get(line).get(constant);
 					ConfigField configField = this.config.getComponentConfig(constant);
 					c.setWidth(CoreWidthConverter.calcWidth(configField.getOptions().width, this.viewWidth));
 					this.layoutStrategy.addComponent(c, configField.getOptions().aligment);
@@ -119,52 +116,40 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 		}
 	}
 
-	public GenericSuggestFieldStrategy<?> getGenericSuggestFieldStrategy(Object componentId) {
-		return FindStrategyHelper.getGenericSuggestFieldStrategy(componentId, this.components);
-	}
-
-	public TextFieldStrategy<?> getTextFieldStrategy(Object componentId) {
+	public TextFieldAdapter<?> getTextFieldStrategy(Object componentId) {
 		return FindStrategyHelper.getTextFieldStrategy(componentId, this.components);
 	}
 
-	public TableStrategy<?> getTableStrategy(Object componentId) {
+	public TableAdapter<?> getTableStrategy(Object componentId) {
 		return FindStrategyHelper.getTableStrategy(componentId, this.components);
 	}
 
-	public SubComponentStrategy<?> getSubComponentStrategy(Object componentId) {
+	public SubComponentAdapter<?> getSubComponentStrategy(Object componentId) {
 		return FindStrategyHelper.getSubComponentStrategy(componentId, this.components);
 	}
 
-	public ComboBoxStrategy<?> getComboBoxStrategy(Object componentId) {
+	public ComboBoxAdapter<?> getComboBoxStrategy(Object componentId) {
 		return FindStrategyHelper.getComboBoxStrategy(componentId, this.components);
 	}
 
-	public LabelStrategy<?> getLabelStrategy(Object componentId) {
+	public LabelAdapter<?> getLabelStrategy(Object componentId) {
 		return FindStrategyHelper.getLabelStrategy(componentId, this.components);
 	}
 
-	public EmbeddedStrategy<?> getEmbeddedStrategy(Object componentId) {
+	public EmbeddedAdapter<?> getEmbeddedStrategy(Object componentId) {
 		return FindStrategyHelper.getEmbeddedStrategy(componentId, this.components);
 	}
 
-	public RadioStrategy<?> getRadioStrategy(Object componentId) {
+	public RadioAdapter<?> getRadioStrategy(Object componentId) {
 		return FindStrategyHelper.getRadioStrategy(componentId, this.components);
 	}
 
-	public CheckBoxStrategy<?> getCheckBoxStrategy(Object componentId) {
+	public CheckBoxAdapter<?> getCheckBoxStrategy(Object componentId) {
 		return FindStrategyHelper.getCheckBoxStrategy(componentId, this.components);
 	}
 
-	public PanelStrategy<?> getPanelStrategy(Object componentId) {
+	public PanelAdapter<?> getPanelStrategy(Object componentId) {
 		return FindStrategyHelper.getPanelStrategy(componentId, this.components);
-	}
-
-	public DynamicListStrategy<?> getDynamicListStrategy(Object componentId) {
-		return FindStrategyHelper.getDynamicListStrategy(componentId, this.components);
-	}
-
-	public SuggestFieldStrategy<?> getSuggestFieldStrategy(Object componentId) {
-		return FindStrategyHelper.getSuggestFieldStrategy(componentId, this.components);
 	}
 
 }

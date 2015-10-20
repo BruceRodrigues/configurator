@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import br.ufsc.configurator.api.adapter.LayoutAdapter;
 import br.ufsc.configurator.api.field.ConfigColumn;
 import br.ufsc.configurator.api.field.ConfigField;
 import br.ufsc.configurator.api.field.ConfigField.ConfigFieldType;
@@ -21,7 +22,6 @@ import br.ufsc.configurator.api.listener.CoreFocusListener;
 import br.ufsc.configurator.api.listener.CoreGetDtoChangeListener;
 import br.ufsc.configurator.api.listener.CoreShortCutListener;
 import br.ufsc.configurator.api.listener.CoreValueChangeListener;
-import br.ufsc.configurator.api.strategy.LayoutStrategy;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -185,11 +185,11 @@ public class ViewConfigurator {
 		this.components.get(line).add(position, field);
 	}
 
-	public LayoutStrategy<?> createLayout(ConfigField field) {
-		return (LayoutStrategy<?>) this.factories.getLayoutFactory().createComponent(field);
+	public LayoutAdapter<?> createLayout(ConfigField field) {
+		return (LayoutAdapter<?>) this.factories.getLayoutFactory().createComponent(field);
 	}
 
-	public LayoutStrategy<?> createPanel(ConfigSubComponent config) {
+	public LayoutAdapter<?> createPanel(ConfigSubComponent config) {
 		return ((PanelFactory<?>) this.factories.getFactory(ConfigFieldType.PANEL)).createPanel(config);
 	}
 
