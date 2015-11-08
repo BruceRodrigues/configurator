@@ -23,4 +23,15 @@ public class CoreWidthConverter {
 		}
 		return value;
 	}
+
+	public static int convertToInt(String value) {
+		if (value == null) {
+			return 100;
+		}
+		if (value.contains(PIXEL)) {
+			value = value.replace(PIXEL, "");
+		}
+		Double total = Double.parseDouble(value);
+		return total.intValue();
+	}
 }
