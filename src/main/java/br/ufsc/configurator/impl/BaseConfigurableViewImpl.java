@@ -71,9 +71,11 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 	@Override
 	public ComponentAdapter generateView(ViewConfiguration configuration, String viewWidth) {
 		this.viewWidth = viewWidth;
+		this.createConfig();
 		this.config.setViewWidth(viewWidth);
-		this.createComponents(configuration);
+		this.config.setFactories(configuration);
 		this.layoutStrategy = this.createLayoutStrategy();
+		this.createComponents(configuration);
 		this.layoutStrategy.setWidth(viewWidth);
 		this.render();
 		return this.layoutStrategy;
@@ -81,7 +83,6 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 
 	private void createComponents(ViewConfiguration factories) {
 		this.configView();
-		this.config.setFactories(factories);
 		this.components = this.builder.buildComponents(this.config);
 	}
 
@@ -150,6 +151,10 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 
 	public PanelAdapter<?> getPanelStrategy(Object componentId) {
 		return FindStrategyHelper.getPanelStrategy(componentId, this.components);
+	}
+
+	protected String calcWidth(String percent) {
+		return CoreWidthConverter.calcWidth(percent, this.viewWidth);
 	}
 
 }

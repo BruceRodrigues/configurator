@@ -10,6 +10,8 @@ public interface LayoutAdapter<LAYOUT_TYPE> extends ComponentAdapter<LAYOUT_TYPE
 
 	void newRow();
 
+	void setRowWidth(String value);
+
 	List<ComponentAdapter<?>> getComponents();
 
 }

@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
 import br.ufsc.configurator.api.ViewConfigurator;
 import br.ufsc.configurator.api.adapter.ComponentAdapter;
 import br.ufsc.configurator.api.adapter.TableAdapter;
+import br.ufsc.configurator.api.converter.CoreWidthConverter;
 import br.ufsc.configurator.api.field.ConfigField;
 import br.ufsc.configurator.api.field.ConfigField.ConfigFieldType;
 import br.ufsc.configurator.api.field.ConfigSubComponent;
-import br.ufsc.configurator.api.field.ViewConfiguration;
 import br.ufsc.configurator.api.field.factory.PanelFactory;
 import br.ufsc.configurator.api.listener.CoreBlurListener;
 import br.ufsc.configurator.api.listener.CoreClickListener;
@@ -31,53 +31,52 @@ public class ConfiguratorBuilder {
 
 	protected static final Logger logger = LoggerFactory.getLogger(ConfiguratorBuilder.class);
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> buildComponents(
-			ViewConfigurator config) {
+	public LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> buildComponents(ViewConfigurator config) {
 
 		LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components = new LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>>();
-
-		ViewConfiguration factories = config.getFactories();
 
 		for (Integer line = 0; line < config.getTotalLines(); line++) {
 			LinkedHashMap<Object, ComponentAdapter<?>> fields = new LinkedHashMap<Object, ComponentAdapter<?>>();
 			List<ConfigField> inputs = config.getComponents(line);
 			for (ConfigField configField : inputs) {
 				Object formField = configField.getFieldConstant();
-				try {
-					ComponentAdapter<?> componentField = null;
-					if (configField.getCustomFactory() != null) {
-						componentField = configField.getCustomFactory().createComponent(configField);
-					} else {
-						componentField = factories.getFactory(configField.getType()).createComponent(configField);
-						switch (configField.getType()) {
-						case TABLE:
-							((TableAdapter) componentField).createColumns(config.getColumns(formField));
-							break;
-						case PANEL:
-						case SUBCOMPONENT:
-							ConfigSubComponent panelConfig = (ConfigSubComponent) configField;
-							panelConfig.setConfiguration(config.getFactories());
-							panelConfig.setParentWidth(config.getViewWidth());
-							if (ConfigFieldType.PANEL.equals(configField.getType())) {
-								componentField = ((PanelFactory) panelConfig.getFormField()).createPanel(panelConfig);
-							} else if (ConfigFieldType.SUBCOMPONENT.equals(configField.getType())) {
-								componentField = panelConfig.getFormField().createComponent(panelConfig);
-							}
-							break;
-						default:
-							break;
-						}
-					}
-					fields.put(formField, componentField);
-					this.addListener(componentField, formField, config);
-				} catch (Exception e) {
-					logger.error("Erro na criação de fields", e);
-				}
+				ComponentAdapter<?> componentField = this.createComponent(configField, config);
+				fields.put(formField, componentField);
+				this.addListener(componentField, formField, config);
+
 			}
 			components.put(line, fields);
 		}
 		return components;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private ComponentAdapter<?> createComponent(ConfigField configField, ViewConfigurator config) {
+		if (configField.getCustomFactory() != null) {
+			return configField.getCustomFactory().createComponent(configField);
+		}
+
+		ComponentAdapter<?> componentField = config.getFactories().getFactory(configField.getType())
+				.createComponent(configField);
+		switch (configField.getType()) {
+		case TABLE:
+			((TableAdapter) componentField).createColumns(config.getColumns(configField.getFieldConstant()));
+			break;
+		case PANEL:
+		case SUBCOMPONENT:
+			ConfigSubComponent panelConfig = (ConfigSubComponent) configField;
+			panelConfig.setConfiguration(config.getFactories());
+			panelConfig.setParentWidth(
+					CoreWidthConverter.calcWidth(configField.getOptions().width, config.getViewWidth()));
+			if (ConfigFieldType.PANEL.equals(configField.getType())) {
+				return ((PanelFactory) panelConfig.getFormField()).createPanel(panelConfig);
+			} else {
+				return panelConfig.getFormField().createComponent(panelConfig);
+			}
+		default:
+			break;
+		}
+		return componentField;
 	}
 
 	@SuppressWarnings("unchecked")
