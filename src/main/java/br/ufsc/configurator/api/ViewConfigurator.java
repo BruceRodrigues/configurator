@@ -185,8 +185,10 @@ public class ViewConfigurator {
 		this.components.get(line).add(position, field);
 	}
 
-	public LayoutAdapter<?> createLayout(ConfigField field) {
-		return (LayoutAdapter<?>) this.factories.getLayoutFactory().createComponent(field);
+	@SuppressWarnings("unchecked")
+	public <COMPONENT_TYPE> LayoutAdapter<COMPONENT_TYPE> createLayout(ConfigField field,
+			Class<COMPONENT_TYPE> componentClass) {
+		return (LayoutAdapter<COMPONENT_TYPE>) this.factories.getLayoutFactory().createComponent(field);
 	}
 
 	public LayoutAdapter<?> createPanel(ConfigSubComponent config) {

@@ -44,6 +44,8 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 
 	private String viewWidth;
 
+	protected Class<?> componentClass;
+
 	@Setter
 	protected boolean allInOneLine = false;
 
@@ -56,8 +58,8 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 		this.createBuilder();
 	}
 
-	private LayoutAdapter createLayoutStrategy() {
-		return this.config.createLayout(null);
+	private <COMPONENT_TYPE> LayoutAdapter<COMPONENT_TYPE> createLayoutStrategy(Class<COMPONENT_TYPE> componentType) {
+		return this.config.createLayout(null, componentType);
 	}
 
 	protected void createConfig() {
@@ -69,12 +71,14 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 	}
 
 	@Override
-	public ComponentAdapter generateView(ViewConfiguration configuration, String viewWidth) {
+	public <COMPONENT_TYPE> ComponentAdapter<COMPONENT_TYPE> generateView(ViewConfiguration configuration,
+			String viewWidth, Class<COMPONENT_TYPE> componentClass) {
+		this.componentClass = componentClass;
 		this.viewWidth = viewWidth;
 		this.createConfig();
 		this.config.setViewWidth(viewWidth);
 		this.config.setFactories(configuration);
-		this.layoutStrategy = this.createLayoutStrategy();
+		this.layoutStrategy = this.createLayoutStrategy(componentClass);
 		this.createComponents(configuration);
 		this.layoutStrategy.setWidth(viewWidth);
 		this.render();
