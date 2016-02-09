@@ -4,9 +4,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import br.ufsc.configurator.api.BaseConfigurableView;
 import br.ufsc.configurator.api.FindStrategyHelper;
 import br.ufsc.configurator.api.ViewConfigurator;
@@ -30,8 +27,6 @@ import lombok.Setter;
 
 @SuppressWarnings("rawtypes")
 public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigurableView {
-
-	protected static final Logger logger = LoggerFactory.getLogger(BaseConfigurableViewImpl.class);
 
 	protected LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components = new LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>>();
 

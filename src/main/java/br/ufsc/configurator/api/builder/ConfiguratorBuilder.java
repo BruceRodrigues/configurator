@@ -3,9 +3,6 @@ package br.ufsc.configurator.api.builder;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import br.ufsc.configurator.api.ViewConfigurator;
 import br.ufsc.configurator.api.adapter.ComponentAdapter;
 import br.ufsc.configurator.api.adapter.TableAdapter;
@@ -28,8 +25,6 @@ import br.ufsc.configurator.api.notifier.CoreShortCutNotifier;
 import br.ufsc.configurator.api.notifier.CoreValueChangeNotifier;
 
 public class ConfiguratorBuilder {
-
-	protected static final Logger logger = LoggerFactory.getLogger(ConfiguratorBuilder.class);
 
 	public LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> buildComponents(ViewConfigurator config) {
 
