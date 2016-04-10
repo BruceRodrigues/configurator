@@ -1,6 +1,5 @@
 package br.ufsc.configurator.impl;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
@@ -11,6 +10,7 @@ import br.ufsc.configurator.api.adapter.CheckBoxAdapter;
 import br.ufsc.configurator.api.adapter.ComboBoxAdapter;
 import br.ufsc.configurator.api.adapter.ComponentAdapter;
 import br.ufsc.configurator.api.adapter.EmbeddedAdapter;
+import br.ufsc.configurator.api.adapter.HasValueAdapter;
 import br.ufsc.configurator.api.adapter.LabelAdapter;
 import br.ufsc.configurator.api.adapter.LayoutAdapter;
 import br.ufsc.configurator.api.adapter.PanelAdapter;
@@ -26,8 +26,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @SuppressWarnings("rawtypes")
-public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigurableView {
+public abstract class BaseConfigurableViewImpl implements BaseConfigurableView {
 
+	@Getter
 	protected LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>> components = new LinkedHashMap<Integer, LinkedHashMap<Object, ComponentAdapter<?>>>();
 
 	@Getter
@@ -54,7 +55,7 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 	}
 
 	private <COMPONENT_TYPE> LayoutAdapter<COMPONENT_TYPE> createLayoutStrategy(Class<COMPONENT_TYPE> componentType) {
-		return this.config.createLayout(null, componentType);
+		return this.config.createLayout(null);
 	}
 
 	protected void createConfig() {
@@ -104,15 +105,10 @@ public abstract class BaseConfigurableViewImpl<FORM_TYPE> implements BaseConfigu
 		}
 	}
 
-	public void setFieldValue(FORM_TYPE value) {
-		if (value instanceof Collection) {
-			Iterator it = ((Collection) value).iterator();
-			while (it.hasNext()) {
-				if (it.hasNext()) {
-					this.createComponents(this.config.getFactories());
-					this.render();
-				}
-			}
+	public void setFieldValue(Object componentId, Object value) {
+		ComponentAdapter<?> adapter = FindStrategyHelper.getComponentStrategy(componentId, this.components);
+		if (adapter != null && adapter instanceof HasValueAdapter<?>) {
+			((HasValueAdapter<?>) adapter).setValue(value);
 		}
 	}
 

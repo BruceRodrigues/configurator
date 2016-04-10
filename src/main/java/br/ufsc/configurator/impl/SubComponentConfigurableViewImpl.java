@@ -8,8 +8,7 @@ import br.ufsc.configurator.api.field.ConfigSubComponent;
 import br.ufsc.configurator.api.field.factory.PanelFactory;
 import br.ufsc.configurator.api.field.factory.SubComponentFactory;
 
-public abstract class SubComponentConfigurableViewImpl<FORM_TYPE, SUBCOMPONENT_TYPE>
-		extends BaseConfigurableViewImpl<FORM_TYPE>
+public abstract class SubComponentConfigurableViewImpl<FORM_TYPE, SUBCOMPONENT_TYPE> extends BaseConfigurableViewImpl
 		implements SubComponentFactory<SUBCOMPONENT_TYPE>, PanelFactory<SUBCOMPONENT_TYPE> {
 
 	@Override

@@ -12,10 +12,7 @@ import java.util.Map.Entry;
 import br.ufsc.configurator.api.adapter.LayoutAdapter;
 import br.ufsc.configurator.api.field.ConfigColumn;
 import br.ufsc.configurator.api.field.ConfigField;
-import br.ufsc.configurator.api.field.ConfigField.ConfigFieldType;
-import br.ufsc.configurator.api.field.ConfigSubComponent;
 import br.ufsc.configurator.api.field.ViewConfiguration;
-import br.ufsc.configurator.api.field.factory.PanelFactory;
 import br.ufsc.configurator.api.listener.CoreBlurListener;
 import br.ufsc.configurator.api.listener.CoreClickListener;
 import br.ufsc.configurator.api.listener.CoreFocusListener;
@@ -181,18 +178,9 @@ public class ViewConfigurator {
 		}
 	}
 
-	private void addConfigField(Integer line, int position, ConfigField field) {
-		this.components.get(line).add(position, field);
-	}
-
 	@SuppressWarnings("unchecked")
-	public <COMPONENT_TYPE> LayoutAdapter<COMPONENT_TYPE> createLayout(ConfigField field,
-			Class<COMPONENT_TYPE> componentClass) {
+	public <COMPONENT_TYPE> LayoutAdapter<COMPONENT_TYPE> createLayout(ConfigField field) {
 		return (LayoutAdapter<COMPONENT_TYPE>) this.factories.getLayoutFactory().createComponent(field);
-	}
-
-	public LayoutAdapter<?> createPanel(ConfigSubComponent config) {
-		return ((PanelFactory<?>) this.factories.getFactory(ConfigFieldType.PANEL)).createPanel(config);
 	}
 
 	public ConfigField removeComponent(Object constant) {
@@ -203,37 +191,6 @@ public class ViewConfigurator {
 			}
 		}
 		return null;
-	}
-
-	private ConfigField removeConfigField(Object constant) {
-		int line = this.getComponentLine(constant);
-		for (int index = 0; index < this.components.get(line).size(); index++) {
-			if (this.components.get(line).get(index).getFieldConstant().equals(constant)) {
-				return this.components.get(line).remove(index);
-			}
-		}
-		return null;
-	}
-
-	@SuppressWarnings("unused")
-	private ConfigField removeConfigField(Object constant, Integer line) {
-		for (int index = 0; index < this.components.get(line).size(); index++) {
-			if (this.components.get(line).get(index).getFieldConstant().equals(constant)) {
-				return this.components.get(line).remove(index);
-			}
-		}
-		return null;
-	}
-
-	public Integer getFirstEmptyLine() {
-		Iterator<Entry<Integer, List<ConfigField>>> it = this.components.entrySet().iterator();
-		while (it.hasNext()) {
-			Entry<Integer, List<ConfigField>> entry = it.next();
-			if (entry.getValue().isEmpty()) {
-				return entry.getKey();
-			}
-		}
-		return this.totalLines;
 	}
 
 	public Integer getTotalLines() {
@@ -299,15 +256,8 @@ public class ViewConfigurator {
 		return -1;
 	}
 
-	/**
-	 * Check if the component which key is @param contains in any line. If True,
-	 * return the line number, otherwise return -1.
-	 *
-	 * @param componentConstant
-	 * @return
-	 */
-	public Integer contains(Object componentConstant) {
-		return this.getComponentLine(componentConstant);
+	public boolean contains(Object componentConstant) {
+		return this.getComponentLine(componentConstant) > -1;
 	}
 
 	protected <T> List<T> clone(Collection<T> collection) {
@@ -316,34 +266,6 @@ public class ViewConfigurator {
 			cloneList.add(t);
 		}
 		return cloneList;
-	}
-
-	public boolean moveToLine(Object componentConstant, Integer destinyLine) {
-		Integer line = this.getComponentLine(componentConstant);
-		if (line != -1) {
-			ConfigField component = this.removeConfigField(componentConstant);
-			this.components.get(destinyLine).add(component);
-			return true;
-		}
-		return false;
-	}
-
-	public void moveTo(Object componentConstant, Integer line, int position) {
-		this.moveToLine(componentConstant, line);
-		this.moveToPosition(componentConstant, position, line);
-	}
-
-	public void moveToPosition(Object componentConstant, int position, Integer componentLine) {
-		this.addConfigField(componentLine, position, this.removeConfigField(componentConstant));
-	}
-
-	public boolean moveToPosition(Object componentConstant, int position) {
-		int line = this.getComponentLine(componentConstant);
-		if (line != -1) {
-			this.moveToPosition(componentConstant, position, line);
-			return true;
-		}
-		return false;
 	}
 
 }
