@@ -36,11 +36,9 @@ public abstract class BaseConfigurableViewImpl implements BaseConfigurableView {
 
 	protected ConfiguratorBuilder builder;
 
-	protected LayoutAdapter layoutStrategy;
+	protected LayoutAdapter layoutAdapter;
 
 	private String viewWidth;
-
-	protected Class<?> componentClass;
 
 	@Setter
 	protected boolean allInOneLine = false;
@@ -54,7 +52,7 @@ public abstract class BaseConfigurableViewImpl implements BaseConfigurableView {
 		this.createBuilder();
 	}
 
-	private <COMPONENT_TYPE> LayoutAdapter<COMPONENT_TYPE> createLayoutStrategy(Class<COMPONENT_TYPE> componentType) {
+	private <COMPONENT_TYPE> LayoutAdapter<COMPONENT_TYPE> createLayoutAdapter() {
 		return this.config.createLayout(null);
 	}
 
@@ -69,16 +67,15 @@ public abstract class BaseConfigurableViewImpl implements BaseConfigurableView {
 	@Override
 	public <COMPONENT_TYPE> ComponentAdapter<COMPONENT_TYPE> generateView(ViewConfiguration configuration,
 			String viewWidth, Class<COMPONENT_TYPE> componentClass) {
-		this.componentClass = componentClass;
 		this.viewWidth = viewWidth;
 		this.createConfig();
 		this.config.setViewWidth(viewWidth);
 		this.config.setFactories(configuration);
-		this.layoutStrategy = this.createLayoutStrategy(componentClass);
+		this.layoutAdapter = this.createLayoutAdapter();
 		this.createComponents(configuration);
-		this.layoutStrategy.setWidth(viewWidth);
+		this.layoutAdapter.setWidth(viewWidth);
 		this.render();
-		return this.layoutStrategy;
+		return this.layoutAdapter;
 	}
 
 	private void createComponents(ViewConfiguration factories) {
@@ -96,11 +93,11 @@ public abstract class BaseConfigurableViewImpl implements BaseConfigurableView {
 					ComponentAdapter<?> c = this.components.get(line).get(constant);
 					ConfigField configField = this.config.getComponentConfig(constant);
 					c.setWidth(CoreWidthConverter.calcWidth(configField.getOptions().width, this.viewWidth));
-					this.layoutStrategy.addComponent(c, configField.getOptions().aligment);
+					this.layoutAdapter.addComponent(c, configField.getOptions().aligment);
 				}
 			}
 			if (line != this.config.getTotalLines() - 1 && !this.allInOneLine) {
-				this.layoutStrategy.newRow();
+				this.layoutAdapter.newRow();
 			}
 		}
 	}
@@ -110,6 +107,14 @@ public abstract class BaseConfigurableViewImpl implements BaseConfigurableView {
 		if (adapter != null && adapter instanceof HasValueAdapter<?>) {
 			((HasValueAdapter<?>) adapter).setValue(value);
 		}
+	}
+
+	public Object getFieldValue(Object id) {
+		ComponentAdapter<?> adapter = FindStrategyHelper.getComponentStrategy(id, this.components);
+		if (adapter != null && adapter instanceof HasValueAdapter<?>) {
+			return ((HasValueAdapter<?>) adapter).getValue();
+		}
+		return null;
 	}
 
 	public TextFieldAdapter<?> getTextFieldStrategy(Object componentId) {

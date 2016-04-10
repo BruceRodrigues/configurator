@@ -8,6 +8,6 @@ public interface BaseConfigurableView {
 	public void configView();
 
 	<COMPONENT_TYPE> ComponentAdapter<COMPONENT_TYPE> generateView(ViewConfiguration factories, String viewWidth,
-			Class<COMPONENT_TYPE> componentType);
+			Class<COMPONENT_TYPE> componentClass);
 
 }
