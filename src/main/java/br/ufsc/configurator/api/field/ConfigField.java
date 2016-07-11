@@ -58,7 +58,7 @@ public class ConfigField {
 	}
 
 	public Integer getLine() {
-		return line;
+		return this.line;
 	}
 
 	public void setLine(Integer line) {
@@ -66,7 +66,7 @@ public class ConfigField {
 	}
 
 	public Integer getPosition() {
-		return position;
+		return this.position;
 	}
 
 	public void setPosition(Integer position) {
@@ -74,7 +74,7 @@ public class ConfigField {
 	}
 
 	public Object getFieldConstant() {
-		return fieldConstant;
+		return this.fieldConstant;
 	}
 
 	public void setFieldConstant(Object fieldConstant) {
@@ -82,7 +82,7 @@ public class ConfigField {
 	}
 
 	public ConfigOptions getOptions() {
-		return options;
+		return this.options;
 	}
 
 	public void setOptions(ConfigOptions options) {
@@ -90,7 +90,7 @@ public class ConfigField {
 	}
 
 	public ConfigFieldType getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(ConfigFieldType type) {
@@ -98,7 +98,7 @@ public class ConfigField {
 	}
 
 	public Integer getMaxLength() {
-		return maxLength;
+		return this.maxLength;
 	}
 
 	public void setMaxLength(Integer maxLength) {
@@ -106,10 +106,15 @@ public class ConfigField {
 	}
 
 	public BaseFactory getCustomFactory() {
-		return customFactory;
+		return this.customFactory;
 	}
 
 	public void setCustomFactory(BaseFactory customFactory) {
 		this.customFactory = customFactory;
 	}
+
+	public ConfigField(String id, ConfigOptions options, ConfigFieldType type) {
+		this(-1, -1, id, options, type);
+	}
+
 }

@@ -1,5 +1,7 @@
 package br.ufsc.configurator.api.field;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +11,9 @@ public class ConfigTable extends ConfigField {
 
 	private Class<?> rowItemClass;
 
-	public ConfigTable(Integer line, Integer position, Object fieldConstant, String caption,
-			String width) {
+	private List<Object> items;
+
+	public ConfigTable(Integer line, Integer position, Object fieldConstant, String caption, String width) {
 		super(line, position, fieldConstant, caption, width, true, ConfigFieldType.TABLE);
 	}
 
